@@ -1,0 +1,41 @@
+package Listas_Simplemente_Ligadas;
+
+
+
+public class Nodo 
+{
+    private Object data;
+    private Nodo siguiente;
+
+    public Nodo(Object data) 
+    {
+        this.data = data;
+    }
+
+    //MODIFICACION DE "data"
+    public void modificarDato(Object data)
+    {
+        this.data = data;
+    }
+
+    public Object dameDato()
+    {
+        return data;
+    }
+
+    //MODIFICACION DE "siguiente"
+    public void enlazarSiguiente(Nodo n)
+    {
+        this.siguiente = n;
+    }
+
+    public Nodo siguienteDato()
+    {
+        return this.siguiente;
+    }
+
+    public void ordenaDato(Object data)
+    { 
+        this.data = data;
+    }
+}
