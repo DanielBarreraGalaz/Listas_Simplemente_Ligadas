@@ -1,0 +1,257 @@
+package Listas_Simplemente_Ligadas;
+
+public class ListaEnlazada
+{
+    private Nodo cabeza;
+    private int size = 0;
+
+    public static void main(String[] args) 
+    {
+        
+        ListaEnlazada Ls = new ListaEnlazada();
+        
+        Ls.addPrimero(2);
+        Ls.addUltimo(4);
+        Ls.addPrimero(1);
+        Ls.addUltimo(5);
+        Ls.addIndice(2,3);
+        
+        Ls.imprimirLista();
+        
+        /*Ls.eliminarPrimero();
+        System.out.println("Eliminacion del primero");
+        Ls.imprimirLista();
+        System.out.println("Eliminacion del ultimo");
+        Ls.eliminarUltimo();
+        Ls.imprimirLista();*/
+        System.out.println("Eliminacion del segundo");
+        Ls.eliminarIndice(4);
+        Ls.Modificar(5, 10);
+        Ls.imprimirLista();
+        //Ls.addUltimo(9);
+        //Ls.imprimirLista();
+    }
+
+    //CONSTRUCTOR 
+    public ListaEnlazada ()
+    {
+        this.cabeza = null;
+    }
+    
+    //INICIANDO UNA VARIABLE BOOLEANA PARA VERIFICAR SI UN ESPACIO ESTA VACIO O NO
+    public boolean vacio()
+    {
+        if(cabeza == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    
+    //---------------INCERCCION DE DATOS----------------------------
+
+    //INCERTAR AL INICIO
+    public void addPrimero(Object data) 
+    {
+        if (cabeza == null) 
+        {
+            cabeza  = new Nodo(data);           
+        }
+        else
+        {
+            Nodo numero_nodo = cabeza; //Definir un objeto de tipo Nodo
+            
+            //Instanciamos un objetod de tipo Nodo para poder hacer el pase de parametdos
+            Nodo nuevo = new Nodo(data);
+            nuevo.enlazarSiguiente(numero_nodo);
+            cabeza = nuevo;
+        }  
+        
+        size++;
+        
+    }//FIN addPrimero
+    
+    
+    //INCERTAR AL FINAL
+    public void addUltimo(Object data)
+    {
+
+        Nodo numero_nodo = this.cabeza;
+        while(numero_nodo.siguienteDato() != null)
+        {
+        	numero_nodo = numero_nodo.siguienteDato();
+        }
+
+        numero_nodo.enlazarSiguiente(new Nodo(data));
+        size++;
+    }//FIN addUltimo
+
+    
+    //INCERTAR EN MEDIO
+    public void addIndice(int index, Object data)
+    {
+        Nodo numero_nodo = this.cabeza;
+
+        for(int i = 0; i<index-1 && numero_nodo.siguienteDato() != null; i++)
+        {
+        	numero_nodo = numero_nodo.siguienteDato();
+        }
+
+        Nodo contenedor = numero_nodo.siguienteDato();
+        numero_nodo.enlazarSiguiente(new Nodo(data));
+        numero_nodo.siguienteDato().enlazarSiguiente(contenedor);
+
+        size++;
+    }//FIN addIndice
+    
+  //---------------ELIMINACION DE DATOS----------------------------
+    
+    //ELIMINAR AL INICIO
+    public void eliminarPrimero()
+    {
+        if(this.vacio()!= true)
+        {
+            if(cabeza.siguienteDato() != null && cabeza.siguienteDato().siguienteDato() != null)
+            {
+                cabeza = cabeza.siguienteDato();
+                size--;
+            }
+            else
+            {
+                cabeza.enlazarSiguiente(null);
+                size--;
+            }    
+        }
+        
+    }//FIN eliminarPrimero
+    
+
+    //SETTER: ELIMINAR AL FINAL
+    public void eliminarUltimo()
+    {
+        Nodo temp = cabeza;
+        
+        if(this.vacio() != true)
+        {
+            while(temp.siguienteDato() != null)
+            {
+                temp = temp.siguienteDato();
+            }
+    
+            Nodo temp2 = cabeza;
+            
+            while(temp2.siguienteDato() != temp)
+            {
+                temp2 = temp2.siguienteDato();
+            }
+            temp2.enlazarSiguiente(null);
+    
+            size--;
+        }
+    }//FIN eliminarUltimo
+
+    //ELIMINAR EN MEDIO
+    public void eliminarIndice(int index)
+    {
+        if(this.vacio() != true)
+        {
+
+            Nodo temp = cabeza;
+            if (index == 0) 
+            {
+                this.eliminarPrimero();
+                size--;  
+            } 
+            else 
+            {
+                if (index > size) 
+                { 
+                    System.out.println("Nodo fuera de rango");
+                } 
+                else 
+                {
+                    for(int i = 0; i<index-1 && temp.siguienteDato()!=null;i++)
+                    {
+                        temp = temp.siguienteDato();
+                    }
+        
+                    if(temp.siguienteDato().siguienteDato() == null)
+                    {
+                        temp.enlazarSiguiente(null);
+                        size--;
+                    }
+                    else
+                    {
+                        temp.enlazarSiguiente(temp.siguienteDato().siguienteDato());
+                        size--;
+                    }          
+                }        
+            }
+            
+        }
+        else
+        {
+            System.out.println("Se ha terminado de vaciar la lista");
+        }
+    }//FIN eliminarIndice
+
+    
+    //---------------MODIFICACIÓN DE DATOS----------------------------
+    
+    public void Modificar(int index, Object data)
+    {
+        
+        if(this.vacio() != true)
+        {
+            Nodo temp = cabeza;
+
+            for(int i=0; i<index && temp.siguienteDato() != null;i++)
+            {
+                temp = temp.siguienteDato();
+            }
+
+            temp.ordenaDato(data);
+        }
+        else
+        {
+            System.out.println("Se ha terminado de vaciar la lista");
+        }
+    }//FIN Modificar
+    
+    //GETTER DEL TAMAÑO
+    public int size()
+    {
+        return size;
+    }
+    
+    //GETTER Y SETTER DE LA MODIFICACION Y OBTENCION DEL VALOR
+    public Object dameValor(int index) 
+    {
+        int contador = 0;
+        Nodo temp = this.cabeza;
+        
+        while (contador < index)
+        {
+            temp = temp.siguienteDato();
+            contador++;
+        }
+        return temp.dameDato();
+    }//FIN Modificar
+
+    
+    public void imprimirLista()
+    {
+        Nodo temp = this.cabeza;
+        int contador = 0;
+        while(contador<size)
+        {
+            System.out.println(temp.dameDato());            
+            temp = temp.siguienteDato();
+            contador++;
+        }
+    }
+}
